@@ -10,8 +10,14 @@ driver = webdriver.Chrome(service=service, options=options)
 driver.maximize_window()
 import time
 
+
+
 driver.get('https://www.daraz.com.bd/products/menz-solid-color-full-sleeve-tshirt-tshirt-t-shirt-i214457900-s1163410501.html')
 
+height = driver.execute_script('return document.body.scrollHeight')
+for k in range(0, height + 300, 30):
+    driver.execute_script(f'window.scrollTo(0, {k});')
+    time.sleep(0.1)
 title = driver.find_element(By.XPATH,'//*[@id="module_product_title_1"]/div/div/span').text
 rating= driver.find_element(By.XPATH,'//*[@id="module_product_review_star_1"]/div/a').text
 price = driver.find_element(By.XPATH,'//*[@id="module_product_price_1"]/div/div/span').text
@@ -35,7 +41,7 @@ for index, image_url in enumerate(pic):
     print(f"Image {image_name} downloaded.")
 
 comment_list=[]
-time.sleep(8)
+
 for comment in driver.find_elements(By.CSS_SELECTOR, '.mod-reviews .content'):
     comment_list.append(comment.text)
 print(len(driver.find_elements(By.CSS_SELECTOR, '.mod-reviews .content')))
@@ -57,4 +63,4 @@ df = pd.DataFrame(title_dic)
 
 df.to_csv('output.csv', index=False)
 
-time.sleep(20)
+time.sleep(20)+
